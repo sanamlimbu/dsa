@@ -23,8 +23,23 @@ func MaximumInt(arr []int, n int) int {
 	if n == 1 {
 		return arr[0]
 	}
-
 	lastItem := float64(arr[n-1])
-
 	return int(math.Max(lastItem, float64(MaximumInt(arr, n-1))))
+}
+
+// BinarySearch - resurisve binary search
+func BinarySearch(arr []int, target int, low int, high int) int {
+	if low > high {
+		return -1
+	}
+	mid := (low + high) / 2
+
+	if target == arr[mid] {
+		return mid
+	} else if target > arr[mid] {
+		return BinarySearch(arr, target, mid+1, high)
+
+	} else {
+		return BinarySearch(arr, target, low, mid-1)
+	}
 }
