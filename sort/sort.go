@@ -27,3 +27,22 @@ func FindSmallest(arr []int) int {
 	}
 	return smallestIndex
 }
+
+// QuickSort - Quick sort algorithm
+// Complexity - Worst case O(n^2) , Average case O(n log n)
+func QuickSort(arr []int) []int {
+	if len(arr) < 2 {
+		return arr
+	}
+	pivot := arr[0]
+	less := []int{}
+	greater := []int{}
+	for i := 1; i < len(arr); i++ {
+		if arr[i] <= pivot {
+			less = append(less, arr[i])
+		} else {
+			greater = append(greater, arr[i])
+		}
+	}
+	return append(append(QuickSort(less), pivot), QuickSort(greater)...)
+}
