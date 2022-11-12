@@ -1,1 +1,1 @@
-# algorithm
+Algorithms and exercises from book, [Grokking Algorithms](https://www.manning.com/books/grokking-algorithms) by **Aditya Bhargava**. Some of the exercises are solved using psuedo codes from [GeeksForGeeks](https://www.geeksforgeeks.org/). 
