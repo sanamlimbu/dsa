@@ -1,6 +1,6 @@
 package sort
 
-// SlectionInt - Selection sort algorithm
+// SelectionInt - Selection sort algorithm
 // Complexity - O(n^2)
 func SelectionInt(arr []int) []int {
 	newArr := make([]int, 0, len(arr))
