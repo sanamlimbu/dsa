@@ -30,6 +30,17 @@ func (h *MaxHeap) Extract() (int, error) {
 	return extracted, nil
 }
 
+func (h *MaxHeap) IsEmpty() bool {
+	return len(h.array) == 0
+}
+
+func (h *MaxHeap) Peek() (int, error) {
+	if h.IsEmpty() {
+		return 0, fmt.Errorf("heap is empty")
+	}
+	return h.array[0], nil
+}
+
 // maxHeapifyDown will heapify top to bottom
 func (h *MaxHeap) maxHeapifyDown(index int) {
 	lastIndex := len(h.array) - 1
