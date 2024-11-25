@@ -4,98 +4,108 @@ import "fmt"
 
 const StackSize = 10
 
-// StackArray is stack implemention with array
-type StackArray struct {
-	top   int
-	max   int
-	array []int
+// SliceStack represents a stack implemented using a slice.
+// The underlying slice dynamically grows as needed to accommodate new elements.
+type SliceStack[T any] struct {
+	slice []T
 }
 
-func NewStackArray() StackArray {
-	stack := StackArray{}
-	stack.top = -1
-	stack.max = StackSize
-	array := [StackSize]int{}
-	stack.array = array[:]
-	return stack
-}
-
-func (s *StackArray) Push(value int) error {
-	if (s.top + 1) < s.max {
-		s.top++
-		s.array[s.top] = value
-		return nil
+// NewSliceStack creates an empty stack.
+// The underlying slice length is zero.
+func NewSliceStack[T any]() *SliceStack[T] {
+	return &SliceStack[T]{
+		slice: make([]T, 0),
 	}
-	return fmt.Errorf("stack is full")
 }
 
-func (s *StackArray) Pop() (int, error) {
-	if s.top < 0 {
-		return 0, fmt.Errorf("stack is empty")
+func (s *SliceStack[T]) Push(element T) {
+	s.slice = append(s.slice, element)
+}
 
+func (s *SliceStack[T]) Pop() (T, error) {
+	var element T
+
+	length := len(s.slice)
+
+	if length == 0 {
+		return element, fmt.Errorf("stack is empty")
 	}
-	value := s.array[s.top]
-	s.top--
-	return value, nil
+
+	element = s.slice[length-1]
+
+	s.slice = s.slice[:length-1]
+
+	return element, nil
 }
 
-func (s *StackArray) Peek() (int, error) {
-	if s.top < 0 {
-		return 0, fmt.Errorf("stack is empty")
+func (s *SliceStack[T]) Peek() (T, error) {
+	var element T
+
+	length := len(s.slice)
+
+	if length == 0 {
+		return element, fmt.Errorf("stack is empty")
 	}
-	return s.array[s.top], nil
+
+	element = s.slice[length-1]
+
+	return element, nil
 }
 
-func (s *StackArray) IsEmpty() bool {
-	if s.top < 0 {
-		return true
+func (s *SliceStack[T]) IsEmpty() bool {
+	return len(s.slice) == 0
+}
+
+// LinkedListStack represents a stack implemented using a singly linked list.
+type LinkedListStack[T any] struct {
+	head *Node[T]
+}
+
+// Node is a singly linked list node.
+type Node[T any] struct {
+	element T
+	next    *Node[T]
+}
+
+// NewLinkedListStack creates an empty stack.
+// The underlying singly linked list's head points to nil.
+func NewLinkedListStack[T any]() *LinkedListStack[T] {
+	return &LinkedListStack[T]{
+		head: nil,
 	}
-	return false
 }
 
-func (s *StackArray) IsFull() bool {
-	if (s.top + 1) == s.max {
-		return true
-	}
-	return false
+func (s *LinkedListStack[T]) Push(element T) {
+	node := &Node[T]{element: element}
+
+	node.next = s.head
+
+	s.head = node
 }
 
-// StackLinkedList is stack implementation with linked list
-type StackLinkedList struct {
-	head *StackNode
-}
+func (s *LinkedListStack[T]) Pop() (T, error) {
+	var element T
 
-// StackNode is a singly linked list node
-type StackNode struct {
-	value int
-	next  *StackNode
-}
-
-func (s *StackLinkedList) Push(value int) {
-	newNode := StackNode{value: value}
-	newNode.next = s.head
-	s.head = &newNode
-}
-
-func (s *StackLinkedList) Pop() (int, error) {
 	if s.head == nil {
-		return 0, fmt.Errorf("stack is empty")
+		return element, fmt.Errorf("stack is empty")
 	}
+
+	element = s.head.element
 	s.head = s.head.next
-	s.head.next = nil
-	return s.head.value, nil
+
+	return element, nil
 }
 
-func (s *StackLinkedList) Peek() (int, error) {
+func (s *LinkedListStack[T]) Peek() (T, error) {
+	var element T
+
 	if s.head == nil {
-		return 0, fmt.Errorf("stack is empty")
+		return element, fmt.Errorf("stack is empty")
 	}
-	return s.head.value, nil
+
+	return s.head.element, nil
 }
 
-func (s *StackLinkedList) IsEmpty() bool {
-	if s.head == nil {
-		return true
-	}
-	return false
+func (s *LinkedListStack[T]) IsEmpty() bool {
+	return s.head == nil
 }
