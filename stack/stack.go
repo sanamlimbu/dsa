@@ -2,8 +2,6 @@ package stack
 
 import "fmt"
 
-const StackSize = 10
-
 // SliceStack represents a stack implemented using a slice.
 // The underlying slice dynamically grows as needed to accommodate new elements.
 type SliceStack[T any] struct {
