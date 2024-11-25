@@ -5,7 +5,7 @@ import (
 )
 
 func TestSliceStack(t *testing.T) {
-	stack := NewSliceStack[int]()
+	stack := NewStack[int](SliceStackImplementation)
 
 	// Test IsEmpty on an empty stack
 	if !stack.IsEmpty() {
@@ -54,7 +54,7 @@ func TestSliceStack(t *testing.T) {
 }
 
 func TestLinkedListStack(t *testing.T) {
-	stack := NewLinkedListStack[int]()
+	stack := NewStack[int](LinkedListStackImplementation)
 
 	// Test IsEmpty on an empty stack
 	if !stack.IsEmpty() {

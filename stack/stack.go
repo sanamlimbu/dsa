@@ -2,25 +2,48 @@ package stack
 
 import "fmt"
 
-// SliceStack represents a stack implemented using a slice.
+type Stack[T any] interface {
+	Push(T)
+	Pop() (T, error)
+	Peek() (T, error)
+	IsEmpty() bool
+}
+
+type StackImplementation string
+
+const (
+	SliceStackImplementation      StackImplementation = "stack"
+	LinkedListStackImplementation StackImplementation = "linked-list"
+)
+
+// NewStack creates an empty stack.
+func NewStack[T any](implementation StackImplementation) Stack[T] {
+	if implementation == SliceStackImplementation {
+		return newSliceStack[T]()
+	}
+
+	return newLinkedListStack[T]()
+}
+
+// sliceStack represents a stack implemented using a slice.
 // The underlying slice dynamically grows as needed to accommodate new elements.
-type SliceStack[T any] struct {
+type sliceStack[T any] struct {
 	slice []T
 }
 
-// NewSliceStack creates an empty stack.
+// newSliceStack creates an empty stack.
 // The underlying slice length is zero.
-func NewSliceStack[T any]() *SliceStack[T] {
-	return &SliceStack[T]{
+func newSliceStack[T any]() *sliceStack[T] {
+	return &sliceStack[T]{
 		slice: make([]T, 0),
 	}
 }
 
-func (s *SliceStack[T]) Push(element T) {
+func (s *sliceStack[T]) Push(element T) {
 	s.slice = append(s.slice, element)
 }
 
-func (s *SliceStack[T]) Pop() (T, error) {
+func (s *sliceStack[T]) Pop() (T, error) {
 	var element T
 
 	length := len(s.slice)
@@ -36,7 +59,7 @@ func (s *SliceStack[T]) Pop() (T, error) {
 	return element, nil
 }
 
-func (s *SliceStack[T]) Peek() (T, error) {
+func (s *sliceStack[T]) Peek() (T, error) {
 	var element T
 
 	length := len(s.slice)
@@ -50,38 +73,38 @@ func (s *SliceStack[T]) Peek() (T, error) {
 	return element, nil
 }
 
-func (s *SliceStack[T]) IsEmpty() bool {
+func (s *sliceStack[T]) IsEmpty() bool {
 	return len(s.slice) == 0
 }
 
-// LinkedListStack represents a stack implemented using a singly linked list.
-type LinkedListStack[T any] struct {
-	head *Node[T]
+// linkedListStack represents a stack implemented using a singly linked list.
+type linkedListStack[T any] struct {
+	head *node[T]
 }
 
-// Node is a singly linked list node.
-type Node[T any] struct {
+// node is a singly linked list node.
+type node[T any] struct {
 	element T
-	next    *Node[T]
+	next    *node[T]
 }
 
-// NewLinkedListStack creates an empty stack.
+// newLinkedListStack creates an empty stack.
 // The underlying singly linked list's head points to nil.
-func NewLinkedListStack[T any]() *LinkedListStack[T] {
-	return &LinkedListStack[T]{
+func newLinkedListStack[T any]() *linkedListStack[T] {
+	return &linkedListStack[T]{
 		head: nil,
 	}
 }
 
-func (s *LinkedListStack[T]) Push(element T) {
-	node := &Node[T]{element: element}
+func (s *linkedListStack[T]) Push(element T) {
+	node := &node[T]{element: element}
 
 	node.next = s.head
 
 	s.head = node
 }
 
-func (s *LinkedListStack[T]) Pop() (T, error) {
+func (s *linkedListStack[T]) Pop() (T, error) {
 	var element T
 
 	if s.head == nil {
@@ -94,7 +117,7 @@ func (s *LinkedListStack[T]) Pop() (T, error) {
 	return element, nil
 }
 
-func (s *LinkedListStack[T]) Peek() (T, error) {
+func (s *linkedListStack[T]) Peek() (T, error) {
 	var element T
 
 	if s.head == nil {
@@ -104,6 +127,6 @@ func (s *LinkedListStack[T]) Peek() (T, error) {
 	return s.head.element, nil
 }
 
-func (s *LinkedListStack[T]) IsEmpty() bool {
+func (s *linkedListStack[T]) IsEmpty() bool {
 	return s.head == nil
 }
