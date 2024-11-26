@@ -1,6 +1,6 @@
 package stack
 
-import "fmt"
+import "errors"
 
 type Stack[T any] interface {
 	Push(T)
@@ -15,6 +15,8 @@ const (
 	SliceStackImplementation      StackImplementation = "stack"
 	LinkedListStackImplementation StackImplementation = "linked-list"
 )
+
+var ErrStackEmpty = errors.New("stack is empty")
 
 // NewStack creates an empty stack.
 func NewStack[T any](implementation StackImplementation) Stack[T] {
@@ -49,7 +51,7 @@ func (s *sliceStack[T]) Pop() (T, error) {
 	length := len(s.slice)
 
 	if length == 0 {
-		return element, fmt.Errorf("stack is empty")
+		return element, ErrStackEmpty
 	}
 
 	element = s.slice[length-1]
@@ -65,7 +67,7 @@ func (s *sliceStack[T]) Peek() (T, error) {
 	length := len(s.slice)
 
 	if length == 0 {
-		return element, fmt.Errorf("stack is empty")
+		return element, ErrStackEmpty
 	}
 
 	element = s.slice[length-1]
@@ -108,7 +110,7 @@ func (s *linkedListStack[T]) Pop() (T, error) {
 	var element T
 
 	if s.head == nil {
-		return element, fmt.Errorf("stack is empty")
+		return element, ErrStackEmpty
 	}
 
 	element = s.head.element
@@ -121,7 +123,7 @@ func (s *linkedListStack[T]) Peek() (T, error) {
 	var element T
 
 	if s.head == nil {
-		return element, fmt.Errorf("stack is empty")
+		return element, ErrStackEmpty
 	}
 
 	return s.head.element, nil
