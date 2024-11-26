@@ -16,7 +16,7 @@ type Input interface {
 	Numeric | ~string
 }
 
-// Search performs a binary search on a sorted slice to find the index of the target element.
+// Search performs a binary search on a sorted slice to find the index of the target element using iteration.
 // If the target element is found, it returns its index; otherwise, it returns -1.
 // The input slice must be sorted, and the element type T must support all relational operators:
 // <, <=, >, >=, ==, and !=
@@ -44,4 +44,28 @@ func Search[T Input](list []T, target T) int {
 	}
 
 	return -1
+}
+
+// SearchByRecursion performs a binary search on a sorted slice to find the index of the target element using recursion.
+// If the target element is found, it returns its index; otherwise, it returns -1.
+// The input slice must be sorted, and the element type T must support all relational operators:
+// <, <=, >, >=, ==, and !=
+// Time complexity: O(log n)
+func SearchByRecursion[T Input](list []T, target T, low, high int) int {
+	if len(list) == 0 || low > high {
+		return -1
+	}
+
+	mid := low + (high-low)/2
+
+	switch {
+	case target == list[mid]:
+		return mid
+	case target < list[mid]:
+		return SearchByRecursion(list, target, low, mid-1)
+	case target > list[mid]:
+		return SearchByRecursion(list, target, mid+1, high)
+	default:
+		return -1
+	}
 }
