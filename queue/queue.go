@@ -1,123 +1,148 @@
 package queue
 
-import "fmt"
+import (
+	"errors"
+)
 
-const ArraySize = 5
-
-type QuequeArray struct {
-	front    int
-	rear     int
-	capacity int
-	array    [ArraySize]int
+type Queue[T any] interface {
+	Enqueue(T)
+	Dequeue() (T, error)
+	Peek() (T, error)
+	IsEmpty() bool
 }
 
-func NewQueueArray() QuequeArray {
-	q := QuequeArray{front: 0, rear: -1, capacity: ArraySize}
-	return q
-}
+type QueueImplementation string
 
-func (q *QuequeArray) Enqueue(value int) error {
-	if (q.rear + 1) < q.capacity {
-		q.rear++
-		q.array[q.rear] = value
-		return nil
+const (
+	SliceQueueImplementation      QueueImplementation = "slice"
+	LinkedListQueueImplementation QueueImplementation = "linked-list"
+)
+
+var ErrQueueEmpty = errors.New("queue is empty")
+
+// NewQueue creates an empty queue.
+func NewQueue[T any](implementation QueueImplementation) Queue[T] {
+	if implementation == SliceQueueImplementation {
+		return newSliceQueue[T]()
 	}
-	return fmt.Errorf("queue is full")
+
+	return newLinkedListQueue[T]()
 }
 
-func (q *QuequeArray) Dequeue() (int, error) {
-	if q.rear < 0 {
-		return 0, fmt.Errorf("queue is empty")
-	}
-	value := q.array[q.front]
-
-	// move remaning elememts on index down
-	for i := 0; i < q.rear; i++ {
-		q.array[i] = q.array[i+1]
-	}
-	q.rear--
-
-	return value, nil
+// sliceQueue represents a queue implemented using a slice.
+type sliceQueque[T any] struct {
+	slice []T
 }
 
-func (q *QuequeArray) Peek() (int, error) {
+// newSliceQueue creates an empty queue i.e underlying slice length is zero.
+func newSliceQueue[T any]() *sliceQueque[T] {
+	return &sliceQueque[T]{
+		slice: make([]T, 0),
+	}
+}
+
+func (q *sliceQueque[T]) Enqueue(element T) {
+	q.slice = append(q.slice, element)
+}
+
+func (q *sliceQueque[T]) Dequeue() (T, error) {
+	var element T
+
+	length := len(q.slice)
+
+	if length == 0 {
+		return element, ErrQueueEmpty
+	}
+
+	element = q.slice[0]
+
+	slice := make([]T, length-1)
+
+	copy(slice, q.slice[1:])
+
+	q.slice = slice
+
+	return element, nil
+}
+
+func (q *sliceQueque[T]) Peek() (T, error) {
+	var element T
+
 	if q.IsEmpty() {
-		return 0, fmt.Errorf("queue is empty")
+		return element, ErrQueueEmpty
 	}
-	return q.array[q.front], nil
+
+	return q.slice[0], nil
 }
 
-func (q *QuequeArray) IsEmpty() bool {
-	if q.rear < 0 {
-		return true
-	}
-	return false
+func (q *sliceQueque[T]) IsEmpty() bool {
+	return len(q.slice) == 0
 }
 
-func (q *QuequeArray) IsFull() bool {
-	if (q.rear + 1) < q.capacity {
-		return false
-	}
-	return true
+// linkedListQueue is queue implementation with singly linked list.
+type linkedListQueue[T any] struct {
+	front *node[T]
+	rear  *node[T]
 }
 
-// QueueLinkedList is queue implementation with linked list
-type QuequeLinkedList struct {
-	front *QueueNode
-	head  *QueueNode // head is also rear and points last node
+type node[T any] struct {
+	element T
+	next    *node[T]
 }
 
-type QueueNode struct {
-	value int
-	next  *QueueNode
+// newLinkedListQueue creates and initializes an empty queue.
+func newLinkedListQueue[T any]() *linkedListQueue[T] {
+	return &linkedListQueue[T]{
+		front: nil,
+		rear:  nil,
+	}
 }
 
-func (q *QuequeLinkedList) Enqueue(value int) {
-	newNode := QueueNode{value: value}
-	// Empty queue ?
-	if q.head == nil {
-		q.front = &newNode
+func (q *linkedListQueue[T]) Enqueue(element T) {
+	node := &node[T]{element: element}
+
+	if q.IsEmpty() {
+		q.front = node
+		q.rear = node
+		return
 	}
-	newNode.next = q.head
-	q.head = &newNode
+
+	q.rear.next = node
+	q.rear = node
 }
 
-func (q *QuequeLinkedList) Dequeue() (int, error) {
-	if q.head == nil {
-		return 0, fmt.Errorf("queue is empty")
+func (q *linkedListQueue[T]) Dequeue() (T, error) {
+	var element T
+
+	if q.IsEmpty() {
+		return element, ErrQueueEmpty
 	}
 
-	// Get value from front of queue
-	value := q.front.value
+	frontNode := q.front
+	element = frontNode.element
 
-	// Only one node ?
-	if q.head == q.front {
-		q.head = nil
+	q.front = frontNode.next
+	frontNode.next = nil
+
+	if q.front == nil {
+		q.rear = nil
 	}
 
-	// Detach the front and make new front node of the queue
-	previousNode := q.head
-	for previousNode != nil {
-		if previousNode.next == q.front {
-			previousNode.next = nil
-			break
-		}
-		previousNode = previousNode.next
-	}
-	q.front = previousNode
-	return value, nil
+	return element, nil
 }
 
-func (q *QuequeLinkedList) Peek() (int, error) {
-	if q.head == nil {
-		return 0, fmt.Errorf("queue is empty")
+func (q *linkedListQueue[T]) Peek() (T, error) {
+	var element T
+
+	if q.IsEmpty() {
+		return element, ErrQueueEmpty
 	}
-	return q.front.value, nil
+
+	element = q.front.element
+
+	return element, nil
 }
 
-func (q *QuequeLinkedList) IsEmpty() bool {
-	if q.head == nil {
-		return true
-	}
-	return false
+func (q *linkedListQueue[T]) IsEmpty() bool {
+	return q.front == nil && q.rear == nil
 }
