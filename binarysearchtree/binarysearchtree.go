@@ -24,7 +24,7 @@ type node[T dsa.Ordered] struct {
 // If element if already present count is increased in the node.
 func (t *BinarySearchTree[T]) Insert(element T) {
 	if t.root == nil {
-		t.root = &node[T]{value: element}
+		t.root = &node[T]{value: element, count: 1}
 		return
 	}
 
@@ -36,7 +36,7 @@ func (n *node[T]) insert(element T) {
 	case n.value < element: // move right
 		{
 			if n.right == nil {
-				n.right = &node[T]{value: element}
+				n.right = &node[T]{value: element, count: 1}
 				break
 			}
 
@@ -45,7 +45,7 @@ func (n *node[T]) insert(element T) {
 	case n.value > element: // move left
 		{
 			if n.left == nil {
-				n.left = &node[T]{value: element}
+				n.left = &node[T]{value: element, count: 1}
 				break
 			}
 
