@@ -1,3 +1,3 @@
-module github.com/sanamlimbu/algorithm
+module github.com/sanamlimbu/dsa
 
-go 1.19
+go 1.21.6
