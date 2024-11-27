@@ -4,16 +4,16 @@ import (
 	"github.com/sanamlimbu/dsa"
 )
 
-type BinarySearchTree[T dsa.Scalar] struct {
+type BinarySearchTree[T dsa.Ordered] struct {
 	root *node[T]
 }
 
 // NewBinarySearchTree creates an empty binary tree.
-func NewBinarySearchTree[T dsa.Scalar]() *BinarySearchTree[T] {
+func NewBinarySearchTree[T dsa.Ordered]() *BinarySearchTree[T] {
 	return &BinarySearchTree[T]{}
 }
 
-type node[T dsa.Scalar] struct {
+type node[T dsa.Ordered] struct {
 	value T
 	count int
 	left  *node[T]
