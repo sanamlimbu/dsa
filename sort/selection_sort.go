@@ -8,54 +8,29 @@ import "github.com/sanamlimbu/dsa"
 //
 // Time complexity: O(n^2)
 func SelectionSort[T dsa.Ordered](input []T, sortType dsa.SortType) []T {
-	result := make([]T, 0, len(input))
+	length := len(input)
 
-	for i := range input {
-		var j int
+	result := make([]T, length)
+	copy(result, input)
 
-		if sortType == dsa.DescendingSortType {
-			j = findGreatest(input)
-		} else {
-			j = findSmallest(input)
+	for i := 0; i < length-1; i++ {
+		index := i
+
+		for j := i + 1; j < length; j++ {
+
+			if sortType == dsa.DescendingSortType {
+				if result[j] > result[index] {
+					index = j
+				}
+			} else {
+				if result[j] < result[index] {
+					index = j
+				}
+			}
 		}
 
-		result = append(result, input[j])
-
-		// swap positions
-		if i != j {
-			input[i], input[j] = input[j], input[i]
-		}
+		result[i], result[index] = result[index], result[i]
 	}
 
 	return result
-}
-
-// findSmallest returns index of smallest element in given input.
-func findSmallest[T dsa.Ordered](input []T) int {
-	smallest := input[0]
-	index := 0
-
-	for i := 1; i < len(input); i++ {
-		if input[i] < smallest {
-			smallest = input[i]
-			index = i
-		}
-	}
-
-	return index
-}
-
-// findGreatest returns index of greatest element in given input.
-func findGreatest[T dsa.Ordered](input []T) int {
-	greatest := input[0]
-	index := 0
-
-	for i := 1; i < len(input); i++ {
-		if input[i] > greatest {
-			greatest = input[i]
-			index = i
-		}
-	}
-
-	return index
 }
