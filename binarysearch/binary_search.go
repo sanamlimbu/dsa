@@ -1,27 +1,13 @@
 package binarysearch
 
-type Int interface {
-	~int | ~int8 | ~int16 | ~int32 | ~int64
-}
-
-type Float interface {
-	~float32 | ~float64
-}
-
-type Numeric interface {
-	Int | Float
-}
-
-type Input interface {
-	Numeric | ~string
-}
+import "github.com/sanamlimbu/dsa"
 
 // Search performs a binary search on a sorted slice to find the index of the target element using iteration.
 // If the target element is found, it returns its index; otherwise, it returns -1.
 // The input slice must be sorted, and the element type T must support all relational operators:
 // <, <=, >, >=, ==, and !=
 // Time complexity: O(log n)
-func Search[T Input](list []T, target T) int {
+func Search[T dsa.Ordered](list []T, target T) int {
 	if len(list) == 0 {
 		return -1
 	}
@@ -51,7 +37,7 @@ func Search[T Input](list []T, target T) int {
 // The input slice must be sorted, and the element type T must support all relational operators:
 // <, <=, >, >=, ==, and !=
 // Time complexity: O(log n)
-func SearchByRecursion[T Input](list []T, target T, low, high int) int {
+func SearchByRecursion[T dsa.Ordered](list []T, target T, low, high int) int {
 	if len(list) == 0 || low > high {
 		return -1
 	}
