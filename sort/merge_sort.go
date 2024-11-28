@@ -97,7 +97,7 @@ func mergeDescending[T dsa.Ordered](leftHalf, rightHalf []T) []T {
 		result = append(result, leftHalf[i])
 	}
 
-	// merge remaining values from left half
+	// merge remaining values from right half
 	for ; j < rightSize; j++ {
 		result = append(result, rightHalf[j])
 	}
