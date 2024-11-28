@@ -21,7 +21,7 @@ import (
 //
 //  4. Base case: The recursion stops when there is only one element left in the sub-array, as a single element is already sorted.
 //
-// Complexity: Worst case O(n^2) , Average case O(n log n)
+// Time complexity: Worst case - O(n^2), Average case - O(n log n)
 func QuickSort[T dsa.Ordered](input []T, sortType dsa.SortType) []T {
 	length := len(input)
 
