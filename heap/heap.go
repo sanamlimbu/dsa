@@ -152,6 +152,9 @@ func (h *maxHeap[T]) heapifyDown(i int) {
 
 		case h.slice[r] > h.slice[l]: // when right child is greater than left child
 			childToCompare = r
+
+		case h.slice[l] == h.slice[r]: // when left child is equal to right right
+			childToCompare = l
 		}
 
 		// when current element is greater or equal to it's child to compare
