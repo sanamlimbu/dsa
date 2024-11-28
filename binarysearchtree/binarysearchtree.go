@@ -4,6 +4,8 @@ import (
 	"github.com/sanamlimbu/dsa"
 )
 
+// Binary Search Tree is a binary tree where every node's left child has a lower value,
+// and every node's right child has a higher value.
 type BinarySearchTree[T dsa.Ordered] struct {
 	root *node[T]
 }

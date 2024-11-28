@@ -6,6 +6,27 @@ import (
 	"github.com/sanamlimbu/dsa"
 )
 
+// A Heap is a complete binary tree data structure.
+// A complete binary tree is a special type of binary tree where all the levels of the tree are filled completely
+// except the lowest level nodes which are filled from as left as possible.
+//
+// It satisfies the heap property: for every node, the value of its children is greater than or equal to its own value.
+// It is often used to implement priority queues because it allows efficient retrieval of the highest (or lowest) priority element.
+//
+// The heap property ensures that:
+// In a max-heap, the value of each parent node is greater than or equal to the values of its children, and the largest value is at the root of the tree.
+// In a min-heap, the value of each parent node is smaller than or equal to the values of its children, and the smallest value is at the root of the tree.
+
+// 		Min-Heap         		Max-Heap
+//
+//	       1                       11
+//	     /   \                   /    \
+//	    2     3                 10      9
+//	   / \   / \               /  \    /  \
+//	  4   5 6   7            8     7  6    5
+//	 / \ / \                / \  / \
+//	8  9 10 11            4  3 2   1
+
 type Heap[T dsa.Ordered] interface {
 	// Insert inserts an element to the heap maintaining heap property.
 	Insert(T)
@@ -119,7 +140,8 @@ func (h *maxHeap[T]) heapifyDown(i int) {
 
 	var childToCompare int
 
-	// loop while index has at least one child
+	// loop until bottom of the tree is reached
+	// don't overflow
 	for l <= last {
 		switch {
 		case l == last: // when left child is the only child
@@ -132,7 +154,7 @@ func (h *maxHeap[T]) heapifyDown(i int) {
 			childToCompare = r
 		}
 
-		// when current element is not smaller than it's child to compare
+		// when current element is greater or equal to it's child to compare
 		if h.slice[i] >= h.slice[childToCompare] {
 			return
 		}
@@ -146,9 +168,13 @@ func (h *maxHeap[T]) heapifyDown(i int) {
 
 // heapifyUp will heapify from bottom to top, starting from given 'i' index.
 func (h *maxHeap[T]) heapifyUp(i int) {
-	j := parent(i)
+	for i > 0 {
+		j := parent(i)
 
-	for h.slice[j] < h.slice[i] {
+		if h.slice[j] >= h.slice[i] {
+			return
+		}
+
 		h.swap(j, i)
 		i = j
 	}
