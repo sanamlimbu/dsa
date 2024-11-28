@@ -2,18 +2,11 @@ package sort
 
 import "github.com/sanamlimbu/dsa"
 
-type SortType string
-
-const (
-	AscendingSortType  SortType = "ascending"
-	DescendingSortType SortType = "descending"
-)
-
 // Merge sort is a sorting algorithm that follows the divide-and-conquer approach.
 // It works by recursively dividing the input array into smaller subarrays
 // and sorting those subarrays then merging them back together to obtain the sorted array.
 // Time complexity: O(nlogn)
-func MergeSort[T dsa.Ordered](input []T, sortType SortType) []T {
+func MergeSort[T dsa.Ordered](input []T, sortType dsa.SortType) []T {
 	if len(input) < 2 {
 		return input
 	}
@@ -33,7 +26,7 @@ func MergeSort[T dsa.Ordered](input []T, sortType SortType) []T {
 	rightHalf = MergeSort(rightHalf, sortType)
 
 	// combined value in descending order
-	if sortType == DescendingSortType {
+	if sortType == dsa.DescendingSortType {
 		return mergeDescending(leftHalf, rightHalf)
 	}
 

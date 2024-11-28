@@ -3,6 +3,8 @@ package sort
 import (
 	"reflect"
 	"testing"
+
+	"github.com/sanamlimbu/dsa"
 )
 
 func TestMergeSortAscending(t *testing.T) {
@@ -40,7 +42,7 @@ func TestMergeSortAscending(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := MergeSort(tt.input, AscendingSortType)
+			result := MergeSort(tt.input, dsa.AscendingSortType)
 			if !reflect.DeepEqual(result, tt.expected) {
 				t.Errorf("given: %v; got: %v; wanted: %v", tt.input, result, tt.expected)
 			}
@@ -83,7 +85,7 @@ func TestMergeSortDescending(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := MergeSort(tt.input, DescendingSortType)
+			result := MergeSort(tt.input, dsa.DescendingSortType)
 			if !reflect.DeepEqual(result, tt.expected) {
 				t.Errorf("given: %v; got: %v; wanted: %v", tt.input, result, tt.expected)
 			}
