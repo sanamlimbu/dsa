@@ -1,1 +1,7 @@
-Algorithms and exercises from book, [Grokking Algorithms](https://www.manning.com/books/grokking-algorithms) by **Aditya Bhargava**. Some of the exercises are solved using psuedo codes from [GeeksForGeeks](https://www.geeksforgeeks.org/). 
+## Data structures and algorithms in Go
+
+1. Binary search
+2. Binary search tree
+3. Stack
+4. Queue 
+5. Heap
