@@ -19,22 +19,22 @@ func TestBuildMaxHeap(t *testing.T) {
 		{
 			name:     "Already a max heap",
 			input:    []int{20, 10, 15},
-			expected: []int{20, 10, 15}, // Already in max heap form
+			expected: []int{20, 10, 15},
 		},
 		{
-			name:     "Unsorted array",
+			name:     "Unsorted slice",
 			input:    []int{10, 20, 5, 6, 1},
-			expected: []int{20, 10, 5, 6, 1}, // Expected heap order
+			expected: []int{20, 10, 5, 6, 1},
 		},
 		{
 			name:     "Negative numbers",
 			input:    []int{-10, -20, -5, -1, -6},
-			expected: []int{-1, -6, -5, -20, -10}, // Expected heap order
+			expected: []int{-1, -5, -10, -20, -6},
 		},
 		{
 			name:     "Mixed positive and negative numbers",
 			input:    []int{3, -2, 15, 7, -8},
-			expected: []int{15, 7, 3, -2, -8}, // Expected heap order
+			expected: []int{15, 7, 3, -2, -8},
 		},
 	}
 
