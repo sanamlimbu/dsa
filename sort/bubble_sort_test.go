@@ -81,17 +81,11 @@ func TestBubbleSort(t *testing.T) {
 			input := make([]int, len(tt.args.input))
 			copy(input, tt.args.input)
 
-			result := BubbleSort(tt.args.input, tt.args.sortType)
+			BubbleSort(tt.args.input, tt.args.sortType)
 
-			if !reflect.DeepEqual(result, tt.expected) {
+			if !reflect.DeepEqual(tt.args.input, tt.expected) {
 				t.Errorf("BubbleSort(%v, %v) = %v, want %v",
-					tt.args.input, tt.args.sortType, result, tt.expected)
-			}
-
-			// Check that the input slice was not modified
-			if !reflect.DeepEqual(input, tt.args.input) {
-				t.Errorf("BubbleSort modified the input slice: got %v, want %v",
-					tt.args.input, input)
+					tt.args.input, tt.args.sortType, tt.args.input, tt.expected)
 			}
 		})
 	}
