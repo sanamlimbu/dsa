@@ -6,12 +6,11 @@ import "github.com/sanamlimbu/dsa"
 // It sorts an array by repeatedly selecting the smallest (or largest) element from the unsorted portion
 // and swapping it with the first unsorted element. This process continues until the entire array is sorted.
 //
+// It is an in-place algorithm.
+//
 // Time complexity: O(n^2)
-func SelectionSort[T dsa.Ordered](input []T, sortType dsa.SortType) []T {
+func SelectionSort[T dsa.Ordered](input []T, sortType dsa.SortType) {
 	length := len(input)
-
-	result := make([]T, length)
-	copy(result, input)
 
 	for i := 0; i < length-1; i++ {
 		index := i
@@ -19,18 +18,16 @@ func SelectionSort[T dsa.Ordered](input []T, sortType dsa.SortType) []T {
 		for j := i + 1; j < length; j++ {
 
 			if sortType == dsa.DescendingSortType {
-				if result[j] > result[index] {
+				if input[j] > input[index] {
 					index = j
 				}
 			} else {
-				if result[j] < result[index] {
+				if input[j] < input[index] {
 					index = j
 				}
 			}
 		}
 
-		result[i], result[index] = result[index], result[i]
+		input[i], input[index] = input[index], input[i]
 	}
-
-	return result
 }
