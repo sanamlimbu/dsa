@@ -6,18 +6,15 @@ import "github.com/sanamlimbu/dsa"
 // inserting each element of an unsorted list into its correct position
 // in a sorted portion of the list. It is like sorting playing cards in your hands.
 //
+// It is an in-place algorithm.
+//
 // Time complexity: O(n^2)
-func InsertionSort[T dsa.Ordered](input []T, sortType dsa.SortType) []T {
-	result := make([]T, len(input))
-	copy(result, input)
-
+func InsertionSort[T dsa.Ordered](input []T, sortType dsa.SortType) {
 	if sortType == dsa.DescendingSortType {
-		sortDescending(result)
+		sortDescending(input)
 	} else {
-		sortAscending(result)
+		sortAscending(input)
 	}
-
-	return result
 }
 
 func sortAscending[T dsa.Ordered](input []T) {

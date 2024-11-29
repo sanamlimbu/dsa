@@ -69,9 +69,9 @@ func TestInsertionSort(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := InsertionSort(tt.args.input, tt.args.sortType)
-			if !reflect.DeepEqual(result, tt.expected) {
-				t.Errorf("InsertionSort(%v) = %v, want %v", tt.args.input, result, tt.expected)
+			InsertionSort(tt.args.input, tt.args.sortType)
+			if !reflect.DeepEqual(tt.args.input, tt.expected) {
+				t.Errorf("InsertionSort(%v) = %v, want %v", tt.args.input, tt.args.input, tt.expected)
 			}
 		})
 	}
