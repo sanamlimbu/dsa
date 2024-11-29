@@ -53,9 +53,9 @@ func TestHeapSort(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			result := HeapSort(tt.args.input, tt.args.sortType)
-			if !reflect.DeepEqual(result, tt.expected) {
-				t.Errorf("HeapSort(%v) = %v, want %v", tt.args.input, result, tt.expected)
+			HeapSort(tt.args.input, tt.args.sortType)
+			if !reflect.DeepEqual(tt.args.input, tt.expected) {
+				t.Errorf("HeapSort(%v) = %v, want %v", tt.args.input, tt.args.input, tt.expected)
 			}
 		})
 	}
