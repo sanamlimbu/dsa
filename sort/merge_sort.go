@@ -5,19 +5,18 @@ import "github.com/sanamlimbu/dsa"
 // Merge sort is a sorting algorithm that follows the divide-and-conquer approach.
 // It works by recursively dividing the input array into smaller subarrays
 // and sorting those subarrays then merging them back together to obtain the sorted array.
+//
+// It is not an in-place algorithm.
+//
 // Time complexity: O(nlogn)
 func MergeSort[T dsa.Ordered](input []T, sortType dsa.SortType) []T {
 	if len(input) < 2 {
 		return input
 	}
 
-	// copying so input is not affected
-	arr := make([]T, len(input))
-	copy(arr, input)
-
-	midIndex := len(arr) / 2
-	leftHalf := arr[:midIndex]
-	rightHalf := arr[midIndex:]
+	midIndex := len(input) / 2
+	leftHalf := input[:midIndex]
+	rightHalf := input[midIndex:]
 
 	// left half comes out sorted
 	leftHalf = MergeSort(leftHalf, sortType)
