@@ -20,12 +20,12 @@ func (list *SinglyLinkedList[K, V]) IsEmpty() bool {
 	return list.head == nil
 }
 
-// Insert inserts key and value pair in the given position.
+// InsertAtPosition inserts key and value pair in the given position.
 // Position starts from 1.
 // Inserts at front when list is empty or position is less than or equal to 0.
 // Inserts at last when position is out of range.
 // Inserts at given position, when position is in the range.
-func (list *SinglyLinkedList[K, V]) Insert(key K, value V, position int) {
+func (list *SinglyLinkedList[K, V]) InsertAtPosition(key K, value V, position int) {
 	node := &node[K, V]{
 		key:   key,
 		value: value,
@@ -56,6 +56,40 @@ func (list *SinglyLinkedList[K, V]) Insert(key K, value V, position int) {
 	}
 
 	node.next = current.next
+	current.next = node
+}
+
+// Insert inserts key and value pair.
+// If key is found then value is overwritten.
+// If not found then new node is added at the end.
+func (list *SinglyLinkedList[K, V]) Insert(key K, value V) {
+	node := &node[K, V]{
+		key:   key,
+		value: value,
+		next:  nil,
+	}
+
+	if list.IsEmpty() {
+		list.head = node
+		return
+	}
+
+	current := list.head
+
+	if current.key == key {
+		current.value = value
+		return
+	}
+
+	for current.next != nil {
+		if current.next.key == key {
+			current.next.value = value
+			return
+		}
+
+		current = current.next
+	}
+
 	current.next = node
 }
 
