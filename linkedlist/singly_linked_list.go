@@ -1,33 +1,35 @@
 package linkedlist
 
-type SinglyLinkedList[T comparable] struct {
-	head *node[T]
+type SinglyLinkedList[K comparable, V any] struct {
+	head *node[K, V]
 }
 
-func NewSinglyLinkedList[T comparable]() *SinglyLinkedList[T] {
-	return &SinglyLinkedList[T]{
+func NewSinglyLinkedList[K comparable, V any]() *SinglyLinkedList[K, V] {
+	return &SinglyLinkedList[K, V]{
 		head: nil,
 	}
 }
 
-type node[T any] struct {
-	data T
-	next *node[T]
+type node[K comparable, V any] struct {
+	key   K
+	value V
+	next  *node[K, V]
 }
 
-func (list *SinglyLinkedList[T]) IsEmpty() bool {
+func (list *SinglyLinkedList[K, V]) IsEmpty() bool {
 	return list.head == nil
 }
 
-// Insert inserts data in the given position.
+// Insert inserts key and value pair in the given position.
 // Position starts from 1.
 // Inserts at front when list is empty or position is less than or equal to 0.
 // Inserts at last when position is out of range.
 // Inserts at given position, when position is in the range.
-func (list *SinglyLinkedList[T]) Insert(data T, position int) {
-	node := &node[T]{
-		data: data,
-		next: nil,
+func (list *SinglyLinkedList[K, V]) Insert(key K, value V, position int) {
+	node := &node[K, V]{
+		key:   key,
+		value: value,
+		next:  nil,
 	}
 
 	// Invalid position or empty list.
@@ -59,7 +61,7 @@ func (list *SinglyLinkedList[T]) Insert(data T, position int) {
 
 // Delete deletes node in the given position.
 // Position starts from 1.
-func (list *SinglyLinkedList[T]) Delete(position int) {
+func (list *SinglyLinkedList[K, V]) Delete(position int) {
 	if position <= 0 || list.IsEmpty() {
 		return
 	}
@@ -78,8 +80,32 @@ func (list *SinglyLinkedList[T]) Delete(position int) {
 	current.next = current.next.next
 }
 
+// DeleteKey deletes node with given key.
+func (list *SinglyLinkedList[K, V]) DeleteKey(key K) {
+	if list.IsEmpty() {
+		return
+	}
+
+	current := list.head
+
+	// Head node matches.
+	if current.key == key {
+		list.head = list.head.next
+		return
+	}
+
+	for current.next != nil {
+		if current.next.key == key {
+			current.next = current.next.next
+			return
+		}
+
+		current = current.next
+	}
+}
+
 // Length returns number of nodes in the linked list.
-func (list *SinglyLinkedList[T]) Length() int {
+func (list *SinglyLinkedList[K, V]) Length() int {
 	if list.IsEmpty() {
 		return 0
 	}
@@ -96,30 +122,41 @@ func (list *SinglyLinkedList[T]) Length() int {
 	return count
 }
 
-// Slice returns slice of data in the linked list.
-func (list *SinglyLinkedList[T]) Slice() []T {
+type pair[K comparable, V any] struct {
+	key   K
+	value V
+}
+
+// Slice returns slice of key-value pairs in the linked list.
+func (list *SinglyLinkedList[K, V]) Slice() []pair[K, V] {
 	if list.IsEmpty() {
 		return nil
 	}
 
 	current := list.head
-	result := []T{current.data}
+	result := []pair[K, V]{{
+		key:   current.key,
+		value: current.value,
+	}}
 
 	for current.next != nil {
 		current = current.next
-		result = append(result, current.data)
+		result = append(result, pair[K, V]{
+			key:   current.key,
+			value: current.value,
+		})
 	}
 
 	return result
 }
 
-// Search searches given element on linked list.
+// Search searches given key on linked list.
 // Returns true when found and false when not found.
-func (list *SinglyLinkedList[T]) Search(data T) bool {
+func (list *SinglyLinkedList[K, V]) Search(key K) bool {
 	current := list.head
 
 	for current != nil {
-		if current.data == data {
+		if current.key == key {
 			return true
 		}
 
