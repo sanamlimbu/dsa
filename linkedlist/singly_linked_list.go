@@ -186,16 +186,19 @@ func (list *SinglyLinkedList[K, V]) Slice() []pair[K, V] {
 
 // Search searches given key on linked list.
 // Returns true when found and false when not found.
-func (list *SinglyLinkedList[K, V]) Search(key K) bool {
+// Returns value as well.
+func (list *SinglyLinkedList[K, V]) Search(key K) (V, bool) {
 	current := list.head
+
+	var value V
 
 	for current != nil {
 		if current.key == key {
-			return true
+			return current.value, true
 		}
 
 		current = current.next
 	}
 
-	return false
+	return value, false
 }

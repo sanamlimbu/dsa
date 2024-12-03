@@ -32,17 +32,17 @@ func TestSinglyLinkedList(t *testing.T) {
 		t.Errorf("expected: %v, got: %v", expected, current)
 	}
 
-	if got := list.Search(10); !got {
+	if _, got := list.Search(10); !got {
 		t.Errorf("Search(10) = %v, want true", got)
 	}
 
-	if got := list.Search(40); got {
+	if _, got := list.Search(40); got {
 		t.Errorf("Search(40) = %v, want false", got)
 	}
 
 	list.Delete(2)
 
-	if got := list.Search(30); got {
+	if _, got := list.Search(30); got {
 		t.Errorf("Search(30) after Delete(2) = %v, want false", got)
 	}
 
