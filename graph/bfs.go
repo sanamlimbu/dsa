@@ -38,7 +38,7 @@ func BreadthFirstSearch[T comparable](graph Graph[T], key T) {
 			return
 		}
 
-		fmt.Println("current vertex: ", vertex.key)
+		fmt.Println("current vertex:", vertex.key)
 
 		for _, adj := range vertex.adjacent {
 			if !visitedVertices[adj.key] {
