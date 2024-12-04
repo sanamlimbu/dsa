@@ -41,7 +41,7 @@ func (g *DirectedGraph[T]) AddEdge(from, to T) error {
 }
 
 // Vertices returns copy of vertices of the graph.
-func (g *DirectedGraph[T]) Vertices(key T) []*vertex[T] {
+func (g *DirectedGraph[T]) Vertices() []*vertex[T] {
 	result := make([]*vertex[T], len(g.vertices))
 
 	copy(result, g.vertices)
