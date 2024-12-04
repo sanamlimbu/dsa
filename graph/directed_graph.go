@@ -1,13 +1,5 @@
 package graph
 
-import (
-	"errors"
-)
-
-var ErrKeyPresent = errors.New("key already present")
-var ErrVertexMissing = errors.New("vertex not present")
-var ErrEdgePresent = errors.New("edge already present")
-
 // DirectedGraph represents an adjacency list graph.
 type DirectedGraph[T comparable] struct {
 	vertices []*vertex[T]
@@ -15,11 +7,6 @@ type DirectedGraph[T comparable] struct {
 
 func NewDirectedGraph[T comparable]() *DirectedGraph[T] {
 	return &DirectedGraph[T]{}
-}
-
-type vertex[T comparable] struct {
-	key      T
-	adjacent []*vertex[T]
 }
 
 // AddVertex adds a vertex to the graph.
@@ -36,8 +23,8 @@ func (g *DirectedGraph[T]) AddVertex(key T) error {
 
 // AddEdge adds an edge to the graph.
 func (g *DirectedGraph[T]) AddEdge(from, to T) error {
-	fromVertex := g.getVertex(from)
-	toVertex := g.getVertex(to)
+	fromVertex := g.GetVertex(from)
+	toVertex := g.GetVertex(to)
 
 	if fromVertex == nil || toVertex == nil {
 		return ErrVertexMissing
@@ -53,9 +40,18 @@ func (g *DirectedGraph[T]) AddEdge(from, to T) error {
 	return nil
 }
 
-// getVertex returns a pointer to the vertex with given key.
+// Vertices returns copy of vertices of the graph.
+func (g *DirectedGraph[T]) Vertices(key T) []*vertex[T] {
+	result := make([]*vertex[T], len(g.vertices))
+
+	copy(result, g.vertices)
+
+	return result
+}
+
+// GetVertex returns a pointer to the vertex with given key.
 // If key not found, nil is returned.
-func (g *DirectedGraph[T]) getVertex(key T) *vertex[T] {
+func (g *DirectedGraph[T]) GetVertex(key T) *vertex[T] {
 	for i, v := range g.vertices {
 		if v.key == key {
 			return g.vertices[i]
