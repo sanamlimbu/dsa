@@ -5,7 +5,7 @@ import (
 )
 
 func TestDirectedGraph(t *testing.T) {
-	g := NewDirectedGraph[string]()
+	g := NewDirectedUnweightedGraph[string](AdjacencyListGraphRepresentation)
 
 	t.Run("Add vertex", func(t *testing.T) {
 		err := g.AddVertex("A")
