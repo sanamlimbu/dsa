@@ -20,7 +20,7 @@ import (
 // 3. Create a list of that vertex's adjacent nodes. Add the ones which aren't in the visited list to the top of the stack.
 //
 // 4. Keep repeating steps 2 and 3 until the stack is empty.
-func DepthFirstSearch[T comparable](graph Graph[T], key T) {
+func DepthFirstSearch[T comparable](graph *DirectedUnweightedGraphAsList[T], key T) {
 	start := graph.GetVertex(key)
 	if start == nil {
 		fmt.Println("start vertex not found")
@@ -55,7 +55,7 @@ func DepthFirstSearch[T comparable](graph Graph[T], key T) {
 	}
 }
 
-func DepthFirstSearchByRecursion[T comparable](graph Graph[T], key T) {
+func DepthFirstSearchByRecursion[T comparable](graph *DirectedUnweightedGraphAsList[T], key T) {
 	start := graph.GetVertex(key)
 	if start == nil {
 		fmt.Println("start vertex not found")

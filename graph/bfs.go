@@ -17,7 +17,7 @@ import (
 //     2.2 For each unvisited neighbor of the dequeued node: Enqueue the neighbor into the queue.
 //     2.3 Mark the neighbor as visited.
 //  3. Termination: Repeat step 2 until the queue is empty.
-func BreadthFirstSearch[T comparable](graph Graph[T], key T) {
+func BreadthFirstSearch[T comparable](graph *DirectedUnweightedGraphAsList[T], key T) {
 	start := graph.GetVertex(key)
 	if start == nil {
 		fmt.Println("start vertex not found")
