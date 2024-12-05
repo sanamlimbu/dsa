@@ -33,7 +33,6 @@ func DepthFirstSearch[T comparable](graph Graph[T], key T) {
 	stack.Push(start)
 
 	visitedVertices := make(map[T]bool, len(vertices))
-	visitedVertices[start.key] = true
 
 	for !stack.IsEmpty() {
 		vertex, err := stack.Pop()
@@ -41,11 +40,15 @@ func DepthFirstSearch[T comparable](graph Graph[T], key T) {
 			return
 		}
 
-		fmt.Println("current vertex:", vertex.key)
+		// Stack may contain duplicate vertices.
+		// Only print popped vertex if it's not visited.
+		if !visitedVertices[vertex.key] {
+			fmt.Println("current vertex:", vertex.key)
+			visitedVertices[vertex.key] = true
+		}
 
 		for _, adj := range vertex.adjacent {
 			if !visitedVertices[adj.key] {
-				visitedVertices[adj.key] = true
 				stack.Push(adj)
 			}
 		}
@@ -72,7 +75,7 @@ func dfs[T comparable](vertex *vertex[T], visitedVertices map[T]bool) {
 	fmt.Println("current vertex:", vertex.key)
 
 	for _, adj := range vertex.adjacent {
-		if visitedVertices[adj.key] {
+		if !visitedVertices[adj.key] {
 			dfs[T](adj, visitedVertices)
 		}
 	}
