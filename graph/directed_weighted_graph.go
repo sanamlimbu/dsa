@@ -93,6 +93,35 @@ func (g *DirectedWeightedGraphAsMatrix[T]) AddEdge(from, to T, weight int) error
 	return nil
 }
 
+// Vertices returns vertices' keys of the graph.
+func (g *DirectedWeightedGraphAsMatrix[T]) Vertices() []T {
+	result := make([]T, 0, len(g.vertexIndexMap))
+
+	for key := range g.vertexIndexMap {
+		result = append(result, key)
+	}
+
+	return result
+}
+
+// IsEdge checks if two vertices has a edge.
+func (g *DirectedWeightedGraphAsMatrix[T]) IsEdge(a, b T) bool {
+	i := g.vertexIndexMap[a]
+	j := g.vertexIndexMap[b]
+
+	value := g.matrix[i][j]
+
+	return value != 0
+}
+
+// Weight returns weight of edge between two vertices.
+func (g *DirectedWeightedGraphAsMatrix[T]) Weight(a, b T) int {
+	i := g.vertexIndexMap[a]
+	j := g.vertexIndexMap[b]
+
+	return g.matrix[i][j]
+}
+
 // Directed weighted graph represented as adjacency list.
 type DirectedWeightedGraphAsList[T comparable] struct {
 	vertices []*weightedGraphVertex[T]
